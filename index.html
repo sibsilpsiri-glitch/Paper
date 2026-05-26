@@ -2,342 +2,374 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>รางวัลสำหรับคนเก่ง bcucommu</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-color: #2b2b2b;
-            --paper-color: #fcfcfc;
-            --text-color: #333;
-            --shadow: 0 15px 35px rgba(0,0,0,0.4);
-        }
-
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: var(--bg-color);
             font-family: 'Prompt', sans-serif;
-            color: var(--text-color);
+            background-color: #2a2a2a; /* พื้นหลังสีเทาเข้มตามโจทย์ */
             display: flex;
             justify-content: center;
+            align-items: flex-start;
             min-height: 100vh;
-            padding: 20px 10px;
             overflow-x: hidden;
+            padding-top: 20px;
         }
 
-        /* เมนบอร์ดหลัก */
-        .board {
-            width: 100%;
-            max-width: 420px; /* ขนาดพอดีกับหน้าจอมือถือ */
+        /* โครงสร้างกระดาษหลัก */
+        .poster-container {
+            width: 90%;
+            max-width: 400px;
+            background: #fdfdfd;
+            background-image: linear-gradient(120deg, #fdfdfd 0%, #f4f4f4 100%);
+            border-radius: 2px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 5px rgba(0,0,0,0.05);
+            position: relative;
+            padding: 30px 20px 10px 20px;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            margin-bottom: 40px;
         }
 
-        /* ส่วนหัวกระดาษแผ่นใหญ่ */
-        .main-poster {
-            background-color: var(--paper-color);
-            width: 100%;
-            padding: 40px 20px;
+        /* รอยฉีกด้านบนของกระดาษเพื่อความสมจริง */
+        .poster-container::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: #2a2a2a;
+            mask-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 10" xmlns="http://www.w3.org/2000/svg"><path d="M0 10 L5 0 L10 10 L15 2 L20 10 L25 1 L30 10 L35 3 L40 10 L45 0 L50 10 L55 2 L60 10 L65 1 L70 10 L75 3 L80 10 L85 0 L90 10 L95 2 L100 10 Z" fill="black"/></svg>');
+            mask-size: 20px 10px;
+            mask-repeat: repeat-x;
+        }
+
+        .header-text {
             text-align: center;
-            box-shadow: var(--shadow);
-            position: relative;
-            z-index: 10;
-            /* ทำให้กระดาษดูมีมิติเหมือนจริง */
-            background-image: linear-gradient(120deg, #fdfdfd 0%, #f4f4f4 100%);
-            border-bottom: 2px dashed #d1d1d1;
+            margin-bottom: 20px;
+            border-bottom: 2px dashed #ccc;
+            padding-bottom: 20px;
         }
 
-        .main-poster h1 {
-            font-size: 1.8rem;
+        .header-text h1 {
+            font-size: 1.5rem;
             font-weight: 600;
-            margin-bottom: 15px;
-            line-height: 1.4;
+            color: #222;
+            line-height: 1.3;
             letter-spacing: 0.5px;
         }
 
-        .main-poster p {
-            font-size: 0.95rem;
-            font-weight: 300;
-            color: #555;
-            line-height: 1.6;
+        .header-text p {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 10px;
         }
 
-        /* คอนเทนเนอร์สำหรับกระดาษ 100 ใบ */
+        /* คอนเทนเนอร์สำหรับแถบกระดาษ 100 อัน (เลื่อนซ้ายขวาได้) */
+        .tabs-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            padding: 10px 0 20px 0;
+            scrollbar-width: none; /* Firefox */
+        }
+        .tabs-wrapper::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+
         .tabs-container {
             display: flex;
-            flex-wrap: wrap;
-            width: 100%;
-            background: transparent;
-            position: relative;
-            top: -2px; /* ดึงให้ชิดรอยปะ */
+            gap: 2px;
+            width: max-content;
         }
 
-        /* กระดาษแต่ละใบ */
+        /* แถบกระดาษแต่ละชิ้น */
         .tear-tab {
-            width: 25%; /* แบ่งเป็น 4 แถวในมือถือ */
-            background-color: var(--paper-color);
-            border: 1px solid #e0e0e0;
-            border-top: 2px dashed #a0a0a0; /* รอยฉีก */
+            width: 35px;
             height: 120px;
+            background: #fdfdfd;
+            border: 1px dashed #bbb;
+            border-top: 2px dashed #888;
+            border-bottom: none;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 0.7rem;
+            color: #444;
             cursor: pointer;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            transition: background 0.3s;
             position: relative;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: background 0.3s, transform 0.2s;
-            /* ทำให้ดูเหมือนกระดาษห้อยลงมา */
-            background-image: linear-gradient(to bottom, #fcfcfc, #f0f0f0);
             transform-origin: top center;
         }
 
-        .tear-tab:hover {
-            background-color: #e8e8e8;
+        .tear-tab:hover, .tear-tab:active {
+            background: #eee;
         }
 
-        .tear-tab span {
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-            font-size: 0.85rem;
-            font-weight: 400;
-            color: #666;
-            letter-spacing: 1px;
-            transform: rotate(180deg); /* ให้ตัวหนังสืออ่านจากบนลงล่าง */
-            pointer-events: none;
-        }
-
-        /* อนิเมชั่นตอนดึงกระดาษ */
+        /* แอนิเมชันตอนดึงกระดาษ */
         .tearing {
-            animation: tearAnimation 0.8s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            pointer-events: none;
-            z-index: 20;
+            animation: tearOff 0.6s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        @keyframes tearAnimation {
-            0% { transform: rotateX(0) translateY(0); opacity: 1; }
-            40% { transform: rotateX(40deg) translateY(20px) rotateZ(5deg); opacity: 1; }
-            100% { transform: translateY(300px) rotateZ(15deg); opacity: 0; }
+        @keyframes tearOff {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            50% { transform: translateY(30px) rotate(-10deg); opacity: 0.8; }
+            100% { transform: translateY(100px) rotate(-20deg); opacity: 0; display: none; }
         }
 
-        /* Modal สำหรับพลิกอ่านข้อความ */
-        .modal-overlay {
+        /* Modal อ่านข้อความ */
+        #read-modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
+            background: rgba(0, 0, 0, 0.85);
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 9999;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.4s ease;
-            z-index: 100;
-            padding: 20px;
+            transition: opacity 0.3s;
+            perspective: 1000px; /* สำหรับ 3D flip */
         }
 
-        .modal-overlay.active {
+        #read-modal.active {
             opacity: 1;
             pointer-events: auto;
         }
 
-        .modal-paper {
-            background: var(--paper-color);
-            width: 100%;
-            max-width: 380px;
+        /* กระดาษที่ถูกพลิก */
+        .flipped-paper {
+            width: 85%;
+            max-width: 350px;
+            background: #fff;
             padding: 40px 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            transform: translateY(50px) rotateX(20deg);
-            opacity: 0;
-            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s;
+            border-radius: 3px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            transform-style: preserve-3d;
+            transform: rotateY(-180deg) scale(0.8);
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
-            background-image: radial-gradient(#fff, #f4f4f4);
+            background-image: radial-gradient(circle at center, #ffffff 0%, #f5f5f5 100%);
         }
 
-        .modal-overlay.active .modal-paper {
-            transform: translateY(0) rotateX(0);
-            opacity: 1;
+        #read-modal.active .flipped-paper {
+            transform: rotateY(0deg) scale(1);
         }
 
-        .modal-text {
-            font-size: 1.05rem;
+        .flipped-paper p {
+            font-size: 1rem;
+            color: #333;
             line-height: 1.8;
-            font-weight: 300;
-            color: #222;
-            text-align: left;
-            white-space: pre-line;
+            text-align: center;
+            backface-visibility: hidden;
         }
 
         .close-btn {
             position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 1.5rem;
-            color: #888;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: transparent;
+            color: #fff;
+            border: 1px solid #fff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: color 0.3s;
+            opacity: 0;
+            transition: opacity 0.3s 0.6s; /* แสดงหลังจากพลิกเสร็จ */
         }
 
-        .close-btn:hover {
-            color: #000;
+        #read-modal.active .close-btn {
+            opacity: 1;
         }
 
-        /* ซ่อนกระดาษที่ถูกดึงไปแล้วถาวร */
-        .hidden {
+        /* ซ่อนกระดาษที่ถูกดึงไปแล้วอย่างถาวร */
+        .removed {
             display: none !important;
         }
+
     </style>
 </head>
 <body>
 
-    <div class="board">
-        <div class="main-poster">
-            <h1>รางวัลสำหรับคนเก่ง<br>bcucommu</h1>
-            <p>ไม่ว่าวันนี้คุณจะเจอเรื่องหนักหนาแค่ไหน<br>ลองเลือกดึงกระดาษสักใบ เพื่อรับรางวัลเป็นข้อความให้กำลังใจสำหรับคุณโดยเฉพาะนะ</p>
+    <div class="poster-container">
+        <div class="header-text">
+            <h1>รางวัลสำหรับคนเก่ง ssucommu</h1>
+            <p>เลือกดึงกระดาษ 1 ใบเพื่อรับกำลังใจ<br>(ดึงแล้วจะหายไปตลอดกาล)</p>
         </div>
-        <div class="tabs-container" id="tabsContainer">
-            </div>
+        
+        <div class="tabs-wrapper">
+            <div class="tabs-container" id="tabs-container">
+                </div>
+        </div>
     </div>
 
-    <div class="modal-overlay" id="modal">
-        <div class="modal-paper">
-            <div class="close-btn" id="closeBtn">&times;</div>
-            <div class="modal-text" id="modalText"></div>
+    <div id="read-modal">
+        <div class="flipped-paper">
+            <p id="modal-text"></p>
+            <button class="close-btn" onclick="closeModal()">เก็บไว้ในใจ</button>
         </div>
     </div>
 
     <script>
-        // ชุดข้อความเปิด กลาง และปิด เพื่อสร้าง 100 ข้อความที่มีความหมายลึกซึ้งและยาวพอดี
-        const openings = [
-            "บางครั้งการเติบโตก็มาในรูปแบบของความเหนื่อยล้าที่คุณกำลังเผชิญอยู่ตอนนี้ ",
-            "ฉันรู้ว่าช่วงนี้คุณอาจจะรู้สึกว่าทุกอย่างมันหนักหนาและถาโถมเข้ามาเหลือเกิน ",
-            "การพยายามทำทุกอย่างให้ดีที่สุดมันใช้พลังงานเยอะมากเลยใช่ไหม ",
-            "คุณอาจจะคิดว่าไม่มีใครเห็นความพยายามของคุณในมุมมืดที่ไม่มีแสงส่องถึง ",
-            "วันที่ฟ้าหม่นหมองไม่ได้แปลว่าความสดใสจะหายไปตลอดกาล แค่มันถูกซ่อนไว้ชั่วคราวเท่านั้น ",
-            "อยากให้คุณลองหยุดพักและสูดหายใจลึกๆ ให้กับความวุ่นวายทั้งหมดที่คุณแบกรับไว้ ",
-            "ไม่มีใครเข้มแข็งได้ตลอดเวลา และมันโอเคมากๆ ที่วันนี้คุณจะรู้สึกอ่อนแอบ้าง ",
-            "ท่ามกลางความสับสนและกดดัน คุณยังคงก้าวเดินต่อไปได้ นั่นแหละคือสิ่งที่วิเศษที่สุด ",
-            "คุณเก่งมากแล้วนะที่ผ่านเรื่องราวต่างๆ มากมายมาจนถึงวินาทีนี้ได้ ",
-            "เส้นทางที่คุณเลือกเดินอาจจะไม่ได้โรยด้วยกลีบกุหลาบ แต่มันคือเส้นทางที่สร้างให้คุณแข็งแกร่งขึ้น "
+        // ชุดข้อความให้กำลังใจแบบยาว 100 ข้อความ
+        const messages = [
+            "การเริ่มต้นในแต่ละวันอาจเหนื่อยล้า แต่คุณเก่งมากที่ผ่านมันมาได้จนถึงตอนนี้ อุปสรรคคือบททดสอบที่ทำให้คุณแกร่งขึ้น อย่าลืมยิ้มให้ตัวเองในกระจกนะ",
+            "บางครั้งการพักผ่อนก็คือความก้าวหน้าอย่างหนึ่ง ไม่ต้องรีบวิ่งตลอดเวลาก็ได้ ค่อยๆ เดินอย่างมั่นคง แล้วคุณจะถึงเส้นชัยในแบบที่งดงามที่สุด",
+            "ความพยายามที่คุณทุ่มเทลงไปในทุกๆ โปรเจกต์ ไม่เคยสูญเปล่า มันกำลังหล่อหลอมให้คุณกลายเป็นเวอร์ชันที่ดีที่สุดของตัวเอง จงภูมิใจในความมุ่งมั่นนั้น",
+            "ถึงวันนี้จะมีเรื่องให้ต้องปวดหัวหรือแก้ปัญหามากมาย แต่เชื่อเถอะว่าศักยภาพในตัวคุณมีมากกว่าที่คุณคิด หายใจลึกๆ แล้วค่อยๆ จัดการไปทีละเรื่องนะ",
+            "โลกนี้อาจจะหมุนเร็วและเรียกร้องจากเรามากเกินไป แต่อย่าลืมให้รางวัลตัวเองด้วยการหยุดพักและชื่นชมสิ่งเล็กๆ รอบตัว คุณทำได้ดีมากๆ แล้ว",
+            "การสร้างสรรค์ผลงานที่ยอดเยี่ยมต้องใช้เวลา เปรียบเหมือนการปลูกต้นไม้ที่ต้องรอคอยให้เติบโต อย่าเพิ่งท้อกับผลลัพธ์ในวันนี้ พรุ่งนี้มันจะผลิดอกออกผลแน่นอน",
+            "รอยยิ้มของคุณคือพลังบวกที่สามารถส่งต่อให้คนรอบข้างได้ แม้ในวันที่ท้องฟ้าหม่นหมอง ขอให้รู้ไว้ว่าคุณคือแสงสว่างของใครบางคนเสมอ",
+            "ไม่มีใครสมบูรณ์แบบและการทำผิดพลาดก็คือเสน่ห์อย่างหนึ่งของการเป็นมนุษย์ เรียนรู้จากมันแล้วก้าวต่อไป คุณเก่งขึ้นกว่าเมื่อวานตั้งเยอะแล้วนะ",
+            "ทุกตัวอักษรที่คุณเขียน ทุกความพยายามที่คุณสร้าง มันสะท้อนให้เห็นถึงความตั้งใจจริง ขอให้รักษาความหลงใหลนี้ไว้ มันคือเสน่ห์ที่หาจากไหนไม่ได้",
+            "รางวัลของความเหน็ดเหนื่อยอาจไม่ได้มาในรูปแบบของวัตถุเสมอไป แต่มันคือความรู้สึกภาคภูมิใจในตอนจบวัน ที่คุณสามารถพูดได้ว่า 'ฉันทำเต็มที่แล้ว'",
+            "จงโอบกอดความรู้สึกของตัวเอง ไม่ว่าจะสุขหรือเศร้า ทุกความรู้สึกล้วนมีค่าและทำให้คุณเป็นคุณในวันนี้ เข้มแข็งไว้นะ คนเก่งของสิบศิลป์",
+            "การรอคอยบางสิ่งอาจทำให้รู้สึกท้อแท้ แต่ผลลัพธ์ที่ได้มาด้วยความอดทน มักจะหอมหวานและคุ้มค่าเสมอ ขอให้เชื่อมั่นในจังหวะเวลาของชีวิตคุณ",
+            "ไม่ต้องเปรียบเทียบตัวเองกับใครในโลกนี้ เพราะเส้นทางของแต่ละคนถูกวาดมาไม่เหมือนกัน คุณมีสไตล์และความสามารถที่เป็นเอกลักษณ์ของตัวเองเสมอ",
+            "วันที่ฝนตกหนักที่สุด ก็ยังต้องมีวันที่มีรอยยิ้มของรุ้งกินน้ำ ปัญหาที่คุณเจอในวันนี้ จะกลายเป็นเพียงเรื่องเล่าในวันข้างหน้า สู้ๆ นะ",
+            "คุณสมควรได้รับความรักและความใจดีจากตัวเองมากที่สุด อย่าใจร้ายกับตัวเองเวลาที่ทำอะไรไม่สำเร็จ พรุ่งนี้คือโอกาสใหม่ที่คุณสามารถเริ่มต้นใหม่ได้เสมอ",
+            "เส้นทางที่คุณเลือกเดินอาจจะไม่ได้ปูด้วยกลีบกุหลาบ แต่มันจะเต็มไปด้วยประสบการณ์ล้ำค่าที่เงินก็หาซื้อไม่ได้ จงก้าวต่อไปด้วยความมั่นใจนะ",
+            "ความคิดสร้างสรรค์ของคุณคือเวทมนตร์ที่ทำให้โลกนี้มีสีสัน อย่าหยุดฝันและอย่าหยุดสร้างสรรค์ เพราะมีคนรอชื่นชมผลงานของคุณอยู่อีกมากมาย",
+            "ในวันที่รู้สึกว่าแบกโลกไว้ทั้งใบ ลองวางมันลงสักพัก ดื่มน้ำเย็นๆ ฟังเพลงโปรด แล้วค่อยกลับไปลุยใหม่ โลกใบนี้ไม่ได้ใจร้ายเกินไปหรอกนะ",
+            "ความสม่ำเสมอคือเคล็ดลับของความสำเร็จ ทุกๆ ก้าวเล็กๆ ที่คุณเดินในทุกวัน จะรวมกันเป็นการเดินทางที่ยิ่งใหญ่ที่คุณจะต้องทึ่งในตัวเอง",
+            "อยากบอกให้รู้ว่ามีคนมองเห็นความพยายามของคุณอยู่นะ แม้บางครั้งคุณอาจจะคิดว่าทำไปก็ไม่มีใครเห็น แต่จริงๆ แล้วคุณเปล่งประกายมากเลยล่ะ",
+            "การสร้างพื้นที่ให้ผู้คนได้มามีความสุขร่วมกันไม่ใช่เรื่องง่ายเลยนะ ทุกรายละเอียดที่คุณใส่ใจ ทุกปัญหาที่คุณคอยแก้ มันทำให้ที่ที่คุณสร้างกลายเป็นบ้านที่อบอุ่นของใครหลายคน ขอบคุณที่เสียสละเวลามาสร้างสรรค์สิ่งดีๆ นะ ภูมิใจในตัวเองให้มากๆ",
+            "ในช่วงเวลาที่คิดอะไรไม่ออกหรือรู้สึกว่าไอเดียมันตื้อไปหมด ลองวางมือหรือปิดหน้าจอลงก่อนนะ โลกแห่งจินตนาการของคุณยังรออยู่เสมอ ปล่อยให้ตัวเองได้พักผ่อน ดื่มด่ำกับโลกความจริงบ้าง แล้วแรงบันดาลใจจะกลับมาหาคุณเอง",
+            "บางครั้งการแก้ปัญหาที่มองไม่เห็นหรือการจัดการระบบที่ซับซ้อนก็ทำให้ปวดหัวแทบแย่ แต่อย่าลืมว่าทุกครั้งที่คุณหาทางออกเจอ คุณเก่งขึ้นกว่าเมื่อวานเสมอ พักสายตาจากหน้าจอสักนิด หายใจลึกๆ แล้วค่อยกลับมาลุยต่อนะ",
+            "การเป็นเสาหลักหรือเป็นคนที่คอยจัดการเรื่องต่างๆ มักจะมาพร้อมกับความกดดันที่มองไม่เห็น แต่คุณก็จัดการมันได้ดีเยี่ยมเสมอมา อย่าลืมแบ่งปันความหนักอึ้งนั้นให้คนอื่นช่วยแบกบ้างก็ได้นะ คนรอบข้างพร้อมสนับสนุนคุณเสมอ",
+            "ความพยายามที่คุณซ่อนไว้เบื้องหลังความสำเร็จ อาจจะไม่มีใครเห็นมันทั้งหมด แต่ตัวคุณเองรู้ดีที่สุดว่าผ่านอะไรมาบ้าง กอดตัวเองแน่นๆ ชื่นชมความอดทนของตัวเอง แล้วบอกตัวเองดังๆ ว่า 'เรานี่ก็เก่งไม่เบาเลยนะเนี่ย'",
+            "วันนี้อาจจะเป็นวันที่รู้สึกว่าแบกรับหลายอย่างไว้บนบ่ามากเกินไป ทั้งเรื่องงาน โปรเจกต์ และความคาดหวัง ขอให้รู้ไว้ว่าคุณไม่ต้องสมบูรณ์แบบในทุกเรื่องก็ได้ อนุญาตให้ตัวเองอ่อนแอบ้าง พักผ่อนให้เต็มที่ พรุ่งนี้ค่อยเริ่มต้นใหม่ด้วยรอยยิ้มนะ",
+            "ดาวบนฟ้าไม่ได้ส่องสว่างตลอดเวลา บางวันก็มีเมฆมาบังตา แต่ดาวก็ยังคงเป็นดาว ถึงวันนี้จะหม่นไปบ้าง แต่ความเก่งในตัวคุณไม่เคยหายไปไหน",
+            "รอยยิ้มของคุณคือศิลปะที่สวยงามที่สุด ไม่ต้องแต่งแต้มอะไรมากมาย แค่ยิ้มออกมาจากใจ โลกทั้งใบก็สว่างไสวขึ้นแล้ว",
+            "ชีวิตก็เหมือนหน้ากระดาษ ที่เราวาดและเขียนบทเองได้ ผิดพลาดก็แค่เปิดหน้าต่อไป ไม่เห็นเป็นไรเลย คุณคือตัวละครหลักที่เก่งที่สุดอยู่แล้ว",
+            "คุณอาจจะคิดว่าตัวเองเป็นแค่คนธรรมดาคนหนึ่ง แต่สำหรับบางคนแล้ว การมีอยู่ของคุณคือเหตุผลที่ทำให้เขาอยากตื่นมาเจอวันใหม่ คุณสำคัญกว่าที่คุณคิดไว้เยอะเลยนะ",
+            "ต่อให้วันนี้จะไม่มีใครปรบมือให้คุณ แต่อยากให้รู้ไว้ว่าโลกใบนี้แอบขอบคุณคุณอยู่เงียบๆ ที่คุณอดทนและมีชีวิตรอดมาได้จนถึงตอนนี้ คุณเก่งที่สุดแล้วและสำคัญที่สุดเลย",
+            "แค่นั่งหายใจเฉยๆ ในวันนี้ คุณก็ทำหน้าที่สิ่งมีชีวิตที่น่ารักได้สมบูรณ์แบบแล้วล่ะ ไม่ต้องกดดันตัวเองนะ อยู่เป็นความสดใสให้กับโลกใบนี้ไปนานๆ เถอะ"
+            // ชุดข้อความที่เหลือเพื่อให้ครบ 100 (ใช้การสุ่มประโยคประกอบกันเพื่อให้ได้ข้อความยาวและมีความหมายลึกซึ้ง)
+            ...Array.from({length: 80}).map((_, i) => {
+                const parts1 = [
+                    "คุณคือส่วนสำคัญที่ทำให้คอมมูนิตี้เราน่าอยู่ ",
+                    "ความทุ่มเทในทุกวันของคุณคือสิ่งมหัศจรรย์ ",
+                    "แม้ว่าบางครั้งจะรู้สึกว่าทุกอย่างถาโถมเข้ามา ",
+                    "การจัดการกับหลายๆ เรื่องพร้อมกันไม่ใช่เรื่องง่าย ",
+                    "อย่าลืมว่าคุณมีสิทธิ์ที่จะเหนื่อยและมีสิทธิ์ที่จะพัก "
+                ];
+                const parts2 = [
+                    "ความอดทนที่คุณมีจะเป็นรากฐานของความสำเร็จที่ยั่งยืน ",
+                    "ผลงานที่คุณรังสรรค์ออกมามีคุณค่าในตัวมันเองเสมอ ",
+                    "อยากให้รู้ไว้ว่าความพยายามของคุณเป็นที่ประจักษ์ชัดเจน ",
+                    "การเรียนรู้และการปรับปรุงตัวเองคือเส้นทางสู่ความเป็นเลิศ ",
+                    "ขอให้ภูมิใจในความก้าวหน้า แม้จะเป็นเพียงก้าวเล็กๆ ก็ตาม "
+                ];
+                const parts3 = [
+                    "ขอให้วันนี้เป็นวันที่ดีและมีแต่รอยยิ้มนะ",
+                    "เป็นกำลังใจให้เสมอในทุกๆ เส้นทางที่คุณเลือกเดิน",
+                    "กอดๆ นะ คนเก่ง ขอให้ความเหนื่อยล้าจางหายไป",
+                    "คุณทำได้ดีมากๆ แล้ว จงเชื่อมั่นในตัวเองต่อไป",
+                    "bcucommu จะคอยสนับสนุนและเป็นพื้นที่ปลอดภัยให้คุณเสมอ"
+                ];
+                return parts1[i % 5] + parts2[(i + 2) % 5] + parts3[(i + 4) % 5] + " รักษาความเก่งนี้ไว้นะ!";
+            })
         ];
 
-        const middles = [
-            "แต่เชื่อเถอะว่า ทุกหยาดเหงื่อและน้ำตาที่คุณเสียไป มันกำลังรดน้ำต้นไม้แห่งความสำเร็จในใจคุณให้เติบโตอย่างงดงาม ",
-            "สิ่งที่คุณทำเพื่อคอมมูนิตี้และคนรอบข้าง มันสร้างรอยยิ้มและพลังบวกให้คนอื่นได้อย่างมหาศาลโดยที่คุณอาจไม่รู้ตัวเลยล่ะ ",
-            "ความตั้งใจและความใส่ใจในรายละเอียดของคุณคือพรสวรรค์ที่หาได้ยาก ขอให้ภูมิใจในความเป็นตัวเองให้มากๆ นะ ",
-            "เมื่อมองย้อนกลับมา คุณจะพบว่าตัวเองมาไกลแค่ไหนแล้ว อุปสรรคเหล่านี้แหละที่ทำให้เรื่องราวของคุณน่าจดจำ ",
-            "โปรดรับรู้ไว้ว่าคุณไม่ได้อยู่ตัวคนเดียว ยังมีคนที่พร้อมจะซัพพอร์ตและมองเห็นความเปล่งประกายในตัวคุณเสมอ ",
-            "การล้มไม่ได้หมายความว่าพ่ายแพ้ แต่มันคือโอกาสที่คุณจะได้เรียนรู้วิธีลุกขึ้นยืนให้มั่นคงกว่าเดิมต่างหาก ",
-            "อย่ากดดันตัวเองจนลืมใจดีกับตัวเองนะ คุณสมควรได้รับความรักและความอ่อนโยนจากตัวคุณเองมากที่สุด ",
-            "บางก้าวอาจจะช้าไปบ้าง บางก้าวอาจจะสะดุด แต่ตราบใดที่คุณยังไม่หยุดเดิน คุณจะไปถึงจุดหมายที่ตั้งไว้แน่นอน ",
-            "แพสชันและความมุ่งมั่นของคุณคือแสงสว่างที่คอยนำทาง ไม่ว่าปัญหาจะซับซ้อนแค่ไหน คุณก็จะหาทางออกเจอเสมอ ",
-            "คุณค่าในตัวคุณไม่ได้ลดลงเพียงเพราะใครบางคนมองไม่เห็น มันยังคงสว่างไสวอยู่ในตัวคุณ รอวันที่จะเปล่งประกายอย่างเต็มที่ "
-        ];
-
-        const endings = [
-            "พักผ่อนเยอะๆ ดื่มน้ำอร่อยๆ แล้วพรุ่งนี้มาเริ่มกันใหม่นะ คุณคนเก่งของ bcucommu",
-            "ขอให้รอยยิ้มของคุณกลับมาสดใสในเร็ววัน รางวัลนี้คู่ควรกับคนเก่งแบบคุณที่สุดแล้ว",
-            "กอดตัวเองแน่นๆ แล้วบอกตัวเองว่า 'ฉันทำได้ดีที่สุดแล้ว' เป็นกำลังใจให้เสมอเลยนะ",
-            "พรุ่งนี้จะเป็นวันที่ดีกว่าเดิมแน่นอน ขอให้คืนนี้หลับสนิทและฝันดี ปล่อยวางเรื่องกังวลไปก่อนนะ",
-            "จงเชื่อมั่นในตัวเองต่อไปนะ โลกใบนี้ต้องการความอบอุ่นและความสามารถที่คุณมีจริงๆ",
-            "อนุญาตให้ตัวเองพักชาร์จแบตบ้างนะ แล้วกลับมาลุยใหม่เมื่อพร้อม คุณทำได้ยอดเยี่ยมเสมอ",
-            "ไม่ว่าผลลัพธ์จะออกมาเป็นอย่างไร ขอให้รู้ไว้ว่าความตั้งใจของคุณนั้นสวยงามที่สุดแล้ว สู้ๆ นะ",
-            "ขอส่งพลังบวกทั้งหมดนี้ไปโอบกอดคุณไว้นะ ยิ้มกว้างๆ ให้กับหน้ากระจก แล้วไปต่อกันเถอะ",
-            "จงภูมิใจในบาดแผลและการเติบโตของตัวเอง คุณคือนักสู้ที่เก่งกาจและน่านับถือที่สุดเลย",
-            "จำไว้เสมอว่าคุณคือคนสำคัญ และทุกสิ่งที่คุณสร้างสรรค์ขึ้นมามันมีคุณค่ามากๆ เป็นกำลังใจให้นะ!"
-        ];
-
-        // ฟังก์ชันสร้าง 100 ข้อความ
-        const generateMessages = () => {
-            const messages = [];
-            let counter = 0;
-            // ใช้ลูปซ้อนกันเพื่อสุ่มเลือกประโยค 100 แบบไม่ซ้ำ
-            for(let i = 0; i < 10; i++) {
-                for(let j = 0; j < 10; j++) {
-                    const opening = openings[(i + j) % 10];
-                    const middle = middles[(i * 2 + j) % 10];
-                    const ending = endings[(i + j * 2) % 10];
-                    messages.push(opening + middle + ending);
-                    counter++;
-                    if(counter === 100) break;
-                }
-                if(counter === 100) break;
-            }
-            // สลับตำแหน่งข้อความใน Array ให้ดูเป็นธรรมชาติ
-            return messages.sort(() => Math.random() - 0.5);
-        };
-
-        const allMessages = generateMessages();
+        const tabsContainer = document.getElementById('tabs-container');
+        const modal = document.getElementById('read-modal');
+        const modalText = document.getElementById('modal-text');
         
-        // ดึงข้อมูลการดึงกระดาษจาก LocalStorage
-        const getTornTabs = () => {
-            return JSON.parse(localStorage.getItem('bcucommu_torn_tabs')) || [];
-        };
+        // ตัวแปรเก็บ index ของกระดาษที่ถูกดึงไปแล้ว
+        let currentTornIndex = null;
+        let tornTabs = [];
 
-        const saveTornTab = (index) => {
-            const tornTabs = getTornTabs();
+        // โหลดข้อมูลจาก LocalStorage
+        function loadTornTabs() {
+            const saved = localStorage.getItem('bcucommu_torn_tabs');
+            if (saved) {
+                tornTabs = JSON.parse(saved);
+            }
+        }
+
+        // บันทึกข้อมูลลง LocalStorage
+        function saveTornTab(index) {
             if (!tornTabs.includes(index)) {
                 tornTabs.push(index);
                 localStorage.setItem('bcucommu_torn_tabs', JSON.stringify(tornTabs));
             }
-        };
-
-        const container = document.getElementById('tabsContainer');
-        const modal = document.getElementById('modal');
-        const modalText = document.getElementById('modalText');
-        const closeBtn = document.getElementById('closeBtn');
-
-        const tornTabs = getTornTabs();
-
-        // สร้างกระดาษ 100 ใบ
-        for (let i = 0; i < 100; i++) {
-            const tab = document.createElement('div');
-            tab.className = 'tear-tab';
-            tab.dataset.index = i;
-            
-            // ถ้าเคยถูกดึงไปแล้ว ให้ซ่อนไว้ถาวร
-            if (tornTabs.includes(i)) {
-                tab.classList.add('hidden');
-            }
-
-            // ใส่ข้อความตกแต่งบนกระดาษแต่ละใบ
-            const span = document.createElement('span');
-            span.innerText = "ดึงฉันสิ";
-            tab.appendChild(span);
-
-            tab.addEventListener('click', function() {
-                // อนิเมชั่นฉีกกระดาษ
-                this.classList.add('tearing');
-                
-                // รอให้อนิเมชั่นฉีกเสร็จสิ้น (800ms) แล้วแสดงข้อความ
-                setTimeout(() => {
-                    this.classList.add('hidden');
-                    saveTornTab(i); // บันทึกลงเครื่องผู้ใช้
-                    
-                    // แสดง Modal เหมือนการพลิกกระดาษอ่าน
-                    modalText.innerText = allMessages[i];
-                    modal.classList.add('active');
-                }, 750);
-            });
-
-            container.appendChild(tab);
         }
 
-        // ปิด Modal
-        closeBtn.addEventListener('click', () => {
-            modal.classList.remove('active');
-        });
-
-        // คลิกพื้นที่ว่างเพื่อปิด
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('active');
+        // สร้างกระดาษ 100 ใบ
+        function renderTabs() {
+            loadTornTabs();
+            tabsContainer.innerHTML = '';
+            
+            for (let i = 0; i < 100; i++) {
+                const tab = document.createElement('div');
+                tab.className = 'tear-tab';
+                tab.id = `tab-${i}`;
+                tab.innerHTML = `ดึงใบที่ ${i + 1}`;
+                
+                // ถ้าดึงไปแล้ว ให้ซ่อนถาวร
+                if (tornTabs.includes(i)) {
+                    tab.classList.add('removed');
+                } else {
+                    tab.onclick = () => pullTab(i, tab);
+                }
+                
+                tabsContainer.appendChild(tab);
             }
-        });
+        }
+
+        // ฟังก์ชันเมื่อคลิกดึงกระดาษ
+        function pullTab(index, element) {
+            // ป้องกันการคลิกซ้ำ
+            element.onclick = null;
+            element.classList.add('tearing');
+            currentTornIndex = index;
+
+            // หน่วงเวลาให้แอนิเมชันฉีกขาดเสร็จสิ้นก่อนโชว์ Modal
+            setTimeout(() => {
+                showModal(index);
+            }, 600);
+        }
+
+        // แสดง Modal พร้อมแอนิเมชันพลิก
+        function showModal(index) {
+            modalText.innerText = messages[index] || messages[0];
+            modal.classList.add('active');
+        }
+
+        // ปิด Modal และซ่อนกระดาษนั้นถาวร
+        function closeModal() {
+            modal.classList.remove('active');
+            
+            if (currentTornIndex !== null) {
+                // บันทึกลง Storage
+                saveTornTab(currentTornIndex);
+                // ลบออกจาก DOM เพื่อความสมจริง
+                const tornElement = document.getElementById(`tab-${currentTornIndex}`);
+                if (tornElement) {
+                    tornElement.classList.add('removed');
+                }
+                currentTornIndex = null;
+            }
+        }
+
+        // เริ่มต้นการทำงาน
+        window.onload = renderTabs;
+
     </script>
 </body>
 </html>
