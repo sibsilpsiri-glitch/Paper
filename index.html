@@ -2,14 +2,15 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>รางวัลสำหรับคนเก่ง bcucommu</title>
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #2b2b2b;
-            --paper-color: #fdfbf7;
-            --text-color: #333333;
+            --bg-color: #2a2a2a;
+            --paper-color: #fdfcf9;
+            --text-main: #333333;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         body {
@@ -17,121 +18,134 @@
             padding: 0;
             background-color: var(--bg-color);
             font-family: 'Prompt', sans-serif;
-            color: var(--text-color);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden; /* ป้องกันการเลื่อนหน้าจอที่ไม่ตั้งใจ */
+            overflow-x: hidden;
         }
 
-        /* ส่วนของแผ่นป้ายหลัก */
-        .flyer-container {
+        /* โครงสร้างกระดาษหลัก */
+        .poster-wrapper {
             width: 90%;
-            max-width: 400px;
-            background-color: var(--paper-color);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 0 40px rgba(0,0,0,0.03);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            border-radius: 2px;
-            /* เพิ่มเท็กซ์เจอร์กระดาษจางๆ */
-            background-image: url('https://www.transparenttextures.com/patterns/dust.png');
+            max-width: 450px; /* ขนาดพอดีมือถือ */
+            margin-top: 40px;
+            margin-bottom: 100px;
+            filter: drop-shadow(var(--shadow));
         }
 
-        .flyer-header {
+        .main-paper {
+            background: linear-gradient(135deg, #ffffff 0%, #f4f4f4 100%);
             padding: 40px 20px;
             text-align: center;
-            border-bottom: 2px dashed #d1d1d1;
+            position: relative;
+            z-index: 2;
+            border-radius: 2px 2px 0 0;
         }
 
-        .flyer-header h1 {
-            font-size: 24px;
+        .main-paper::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: repeating-linear-gradient(to right, transparent, transparent 5px, #d1d1d1 5px, #d1d1d1 10px);
+        }
+
+        h1 {
+            color: var(--text-main);
+            font-size: 1.5rem;
             font-weight: 600;
-            margin: 0 0 15px 0;
-            line-height: 1.4;
+            margin-bottom: 20px;
             letter-spacing: 0.5px;
+            line-height: 1.4;
         }
 
-        .flyer-header p {
-            font-size: 14px;
+        p.desc {
+            color: #555;
+            font-size: 0.9rem;
             font-weight: 300;
-            margin: 0;
-            color: #666;
+            line-height: 1.6;
         }
 
-        /* ส่วนของแถบกระดาษ 100 อัน (เลื่อนซ้ายขวาได้) */
+        /* ส่วนแถบกระดาษด้านล่าง 100 อัน */
         .tabs-container {
             display: flex;
             overflow-x: auto;
-            /* ซ่อน Scrollbar แต่ยังเลื่อนได้ */
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            padding-bottom: 20px;
             scroll-snap-type: x mandatory;
+            scrollbar-width: none; /* ซ่อน scrollbar ใน Firefox */
+            -ms-overflow-style: none; /* ซ่อน scrollbar ใน IE/Edge */
+            position: relative;
+            z-index: 1;
+            padding-bottom: 20px;
         }
         
         .tabs-container::-webkit-scrollbar {
-            display: none;
+            display: none; /* ซ่อน scrollbar ใน Chrome/Safari */
         }
 
         .tab {
-            flex: 0 0 auto;
-            width: 50px;
+            flex: 0 0 35px;
             height: 120px;
-            background-color: var(--paper-color);
-            border-right: 1px solid #e0e0e0;
-            border-top: 2px dashed #a0a0a0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            position: relative;
-            transform-origin: top center;
-            transition: background-color 0.2s;
-            scroll-snap-align: start;
-            /* ลายเส้นกระดาษ */
-            background-image: url('https://www.transparenttextures.com/patterns/dust.png');
-        }
-
-        .tab:hover {
-            background-color: #f0eee9;
-        }
-
-        .tab-text {
+            background: linear-gradient(180deg, #fdfcf9 0%, #ececec 100%);
+            border-right: 1px solid rgba(0,0,0,0.05);
+            border-left: 1px solid rgba(255,255,255,0.8);
             writing-mode: vertical-rl;
-            text-orientation: mixed;
-            font-size: 13px;
-            font-weight: 400;
-            color: #555;
-            letter-spacing: 1px;
+            text-align: center;
+            padding-top: 10px;
+            font-size: 0.75rem;
+            color: #666;
+            cursor: pointer;
+            scroll-snap-align: start;
+            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), background 0.3s;
+            transform-origin: top;
+            position: relative;
+        }
+
+        .tab:active {
+            background: #e0e0e0;
+        }
+
+        /* รอยปรุด้านบนกระดาษแต่ละใบ */
+        .tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: repeating-linear-gradient(to right, transparent, transparent 2px, #999 2px, #999 4px);
+        }
+
+        /* แอนิเมชันตอนโดนฉีก */
+        .tab.torn {
+            animation: tearOff 0.6s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
             pointer-events: none;
         }
 
-        /* อนิเมชันตอนดึงกระดาษ */
-        .tab.tearing {
-            animation: tearDown 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        @keyframes tearOff {
+            0% { transform: translateY(0) rotate(0); opacity: 1; }
+            50% { transform: translateY(40px) rotate(15deg); opacity: 0.8; }
+            100% { transform: translateY(150px) rotate(35deg) scale(0.8); opacity: 0; }
         }
 
-        @keyframes tearDown {
-            0% { transform: rotate(0deg) translateY(0); opacity: 1; }
-            50% { transform: rotate(-5deg) translateY(20px); opacity: 0.8; }
-            100% { transform: rotate(-15deg) translateY(100px); opacity: 0; }
-        }
-
-        /* Modal สำหรับแสดงข้อความหลังพลิกกระดาษ */
+        /* Modal พลิกกระดาษอ่านข้อความ */
         .modal-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0, 0, 0, 0.85);
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 1000;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.4s ease;
-            z-index: 1000;
-            perspective: 1000px; /* สำหรับ 3D Flip */
+            transition: opacity 0.3s ease;
+            perspective: 1000px;
         }
 
         .modal-overlay.active {
@@ -139,136 +153,141 @@
             pointer-events: auto;
         }
 
-        .torn-paper {
-            width: 80%;
-            max-width: 300px;
-            min-height: 200px;
-            background-color: var(--paper-color);
-            padding: 30px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            /* ทำขอบบนให้ดูเหมือนรอยฉีก */
-            clip-path: polygon(0% 5%, 5% 0%, 10% 6%, 15% 1%, 20% 7%, 25% 2%, 30% 8%, 35% 0%, 40% 6%, 45% 2%, 50% 8%, 55% 1%, 60% 7%, 65% 2%, 70% 8%, 75% 0%, 80% 6%, 85% 1%, 90% 7%, 95% 2%, 100% 5%, 100% 100%, 0% 100%);
-            transform: rotateY(180deg) scale(0.5);
-            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* อนิเมชันเด้งและพลิก */
-            transform-style: preserve-3d;
-            background-image: url('https://www.transparenttextures.com/patterns/dust.png');
+        .modal-paper {
+            background: #fdfcf9;
+            width: 85%;
+            max-width: 400px;
+            padding: 40px 30px;
+            border-radius: 4px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            transform: rotateX(90deg);
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            background-image: linear-gradient(90deg, rgba(200,200,200,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
         }
 
-        .modal-overlay.active .torn-paper {
-            transform: rotateY(0deg) scale(1);
+        .modal-overlay.active .modal-paper {
+            transform: rotateX(0deg);
         }
 
-        .message-text {
-            font-size: 20px;
-            font-weight: 600;
-            line-height: 1.5;
-            color: var(--text-color);
-            /* ซ่อนข้อความตอนกระดาษยังไม่พลิก */
-            backface-visibility: hidden; 
+        .modal-message {
+            font-size: 1rem;
+            color: var(--text-main);
+            line-height: 1.8;
+            text-align: justify;
+            font-weight: 300;
+            white-space: pre-wrap;
         }
 
         .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: white;
-            font-size: 30px;
+            margin-top: 30px;
+            width: 100%;
+            padding: 12px;
+            background: #333;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Prompt', sans-serif;
+            font-size: 1rem;
             cursor: pointer;
-            font-weight: 300;
+            transition: background 0.2s;
+        }
+
+        .close-btn:hover {
+            background: #555;
+        }
+        
+        .grab-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 0.8rem;
+            margin-top: 15px;
+            gap: 10px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
         }
     </style>
 </head>
 <body>
 
-    <div class="flyer-container">
-        <div class="flyer-header">
-            <h1>รางวัลสำหรับคนเก่ง<br>bcucommu</h1>
-            <p>ดึงกระดาษเพื่อรับข้อความให้กำลังใจของคุณวันนี้ :)</p>
+    <div class="poster-wrapper">
+        <div class="main-paper">
+            <h1>รางวัลสำหรับคนเก่ง bcucommu</h1>
+            <p class="desc">เพราะความตั้งใจของคุณมีค่าเสมอ ไม่ว่าวันนี้จะเจอเรื่องหนักหนาแค่ไหน ทั้งโค้ดที่รันไม่ผ่าน พล็อตที่คิดไม่ออก หรือตารางงานที่ยุ่งเหยิง... อนุญาตให้ตัวเองได้พักและรับกำลังใจจากกระดาษเหล่านี้ไปได้เลยนะ</p>
+            <div class="grab-hint">
+                <span>◀ เลื่อนซ้ายขวา และแตะเพื่อดึงกระดาษ ▶</span>
+            </div>
         </div>
-        <div class="tabs-container" id="tabs-container"></div>
+        <div class="tabs-container" id="tabs-container">
+            </div>
     </div>
 
     <div class="modal-overlay" id="modal">
-        <div class="close-btn" id="close-modal">&times;</div>
-        <div class="torn-paper">
-            <div class="message-text" id="message-display"></div>
+        <div class="modal-paper">
+            <div class="modal-message" id="modal-text"></div>
+            <button class="close-btn" id="close-btn">เก็บกำลังใจนี้ไว้ (ปิด)</button>
         </div>
     </div>
 
     <script>
-        // ฐานข้อมูลข้อความให้กำลังใจ (คุณสามารถเพิ่มให้ครบ 100 ข้อความที่ไม่ซ้ำกันได้ที่นี่)
-        const encouragingMessages = [
-            "เก่งมากเลยนะ วันนี้ทำได้ดีมาก!",
-            "พักผ่อนบ้างนะคนเก่ง ร่างกายต้องการการชาร์จแบต",
-            "รอยยิ้มของคุณทำให้โลกสดใสขึ้นนะ รู้ตัวไหม",
-            "เหนื่อยก็พัก ไม่เป็นไรหรอก พรุ่งนี้ค่อยลุยใหม่",
-            "ทุกความพยายามมีความหมายเสมอ อย่าเพิ่งท้อนะ",
-            "คุณคือคนสำคัญนะ ภูมิใจในตัวเองให้มากๆ",
-            "ท้องฟ้าวันนี้สวยจัง อย่าลืมเงยหน้ามองบ้างนะ",
-            "ร้องไห้บ้างก็ได้นะ ความอ่อนแอไม่ใช่เรื่องผิด",
-            "คุณเก่งกว่าที่คุณคิดไว้เยอะเลย มั่นใจหน่อย!",
-            "กอดๆ นะ วันนี้อาจจะหนัก แต่คุณจะผ่านมันไปได้",
-            "อย่าลืมกินของอร่อยๆ เป็นรางวัลให้ตัวเองด้วยล่ะ",
-            "ข้อผิดพลาดคือบทเรียน ไม่ใช่บทสรุปของชีวิต",
-            "ค่อยๆ ก้าวไปทีละนิด ไม่ต้องรีบแข่งกับใคร",
-            "ขอบคุณที่พยายามอย่างหนักมาจนถึงตอนนี้นะ",
-            "คุณคู่ควรกับความรักและความสุขบนโลกใบนี้",
-            "อนุญาตให้ตัวเองขี้เกียจบ้างในบางวันนะ",
-            "ไม่ว่าผลจะเป็นยังไง คุณทำเต็มที่แล้ว เก่งมากๆ",
-            "หายใจเข้าลึกๆ... ปล่อยเรื่องเครียดทิ้งไปก่อน",
-            "พรุ่งนี้ต้องเป็นวันที่ดีกว่าเดิมแน่นอน",
-            "เป็นกำลังใจให้อยู่ตรงนี้นะ สู้ๆ!"
+        // ชุดข้อความให้กำลังใจขนาดยาว (ระบบจะสุ่มและวนซ้ำจนครบ 100 ใบ)
+        const messages = [
+            "บางครั้งการเติบโตก็ไม่ได้มาในรูปแบบของความสำเร็จที่ยิ่งใหญ่เสมอไป แต่มันแฝงอยู่ในความอดทนที่คุณมีในวันที่ทุกอย่างไม่เป็นใจ คุณอาจจะรู้สึกว่าก้าวเดินช้ากว่าคนอื่น แต่วันนี้คุณก็เดินมาไกลกว่าเมื่อวานแล้วนะ เก่งมากเลยที่ผ่านมันมาได้",
+            "รู้นะว่าช่วงนี้เหนื่อยมาก ทั้งสิ่งที่แบกไว้บนบ่าและความคาดหวังต่างๆ อยากบอกว่าคุณทำได้ดีที่สุดแล้วล่ะ ไม่ต้องสมบูรณ์แบบไปเสียทุกอย่างหรอก แค่เป็นคุณที่พยายามในแบบของตัวเองก็ยอดเยี่ยมที่สุดแล้ว อนุญาตให้ตัวเองพักผ่อนบ้างนะ",
+            "รอยยิ้มของคุณคือสิ่งที่มีค่ามากที่สุด อย่าลืมใจดีกับตัวเองให้มากๆ เหมือนที่คุณคอยใจดีกับคนรอบข้างเสมอ ความพยายามที่คุณทุ่มเทลงไปไม่เคยสูญเปล่า มันกำลังหล่อหลอมให้คุณกลายเป็นคนที่เข้มแข็งและงดงามขึ้นในทุกๆ วัน",
+            "ไม่เป็นไรเลยถ้ารู้สึกว่าวันนี้เป็นวันที่แย่ ท้องฟ้ายังมีวันที่เมฆครึ้ม แล้วทำไมคนเราจะมีวันที่อ่อนแอไม่ได้ล่ะ ร้องไห้ได้นะ พักเหนื่อยได้นะ แล้วพรุ่งนี้ค่อยตื่นมารับแสงแดดใหม่ ขอให้โลกนี้ใจดีกับคุณเหมือนที่คุณตั้งใจใช้ชีวิตนะ",
+            "การสร้างสรรค์ผลงานชิ้นหนึ่งขึ้นมาต้องใช้พลังงานเยอะมาก คุณคือศิลปินที่กำลังวาดลวดลายชีวิตของตัวเองอยู่ อาจจะมีลบจุดที่ผิดพลาดบ้าง ระบายสีออกนอกเส้นบ้าง แต่นั่นแหละคือศิลปะที่ทำให้ผลงานชิ้นนี้มีเอกลักษณ์และเป็นตัวคุณที่สุด ภูมิใจในตัวเองเยอะๆ นะ",
+            "ขอบคุณนะที่ยังไม่ยอมแพ้ ขอบคุณที่ยังตื่นมาเผชิญหน้ากับโลกใบนี้ แม้ว่าบางวันมันจะดูวุ่นวายไปหมด คุณคือคนเก่งที่ซ่อนความเข้มแข็งไว้มากมาย ขอให้หลังจากนี้มีแต่เรื่องราวที่ทำให้คุณใจฟู และได้พบเจอกับความสุขที่เรียบง่ายในทุกวัน",
+            "ความสำเร็จไม่ได้มีไว้ให้คนที่วิ่งเร็วที่สุดเพียงอย่างเดียว แต่มีไว้ให้คนที่ยังคงก้าวเดินต่อไปแม้จะสะดุดล้มต่างหาก ทุกความล้มเหลวคือบทเรียนที่ทำให้คุณแกร่งขึ้น อย่าลืมมองย้อนกลับไปดูนะว่าคุณฝ่าฟันอุปสรรคมาได้เยอะแค่ไหนแล้ว",
+            "หากรู้สึกว่ากำลังแบกโลกไว้ทั้งใบ ลองค่อยๆ วางมันลงก่อนไหม โลกใบนี้หมุนไปได้โดยที่คุณไม่ต้องแบกมันไว้นะ หันมาดูแลหัวใจตัวเอง ทานของอร่อยๆ ฟังเพลงโปรด และนอนหลับให้เต็มอิ่ม เพราะร่างกายและจิตใจของคุณคือสิ่งที่สำคัญที่สุด",
+            "อย่าเอาตัวเองไปเปรียบเทียบกับใครเลย ดอกไม้แต่ละดอกยังมีฤดูกาลผลิบานที่ไม่เหมือนกัน คุณเองก็มีจังหวะเวลา (Timezone) ของตัวเองที่สวยงามที่สุดเช่นกัน จงเบ่งบานในแบบของคุณ ในเวลาที่ใช่ของตัวคุณเองนะ",
+            "จำไว้นะว่าคุณคือความภาคภูมิใจของตัวเอง ไม่ว่าผลลัพธ์ในวันนี้จะเป็นอย่างไร แต่ระหว่างทางคุณได้เรียนรู้ ได้เติบโต และได้พยายามอย่างเต็มที่แล้ว ขอส่งกอดอุ่นๆ ผ่านข้อความนี้ไปให้นะ คุณคนเก่ง"
         ];
-
-        // สร้าง Array ให้ครบ 100 อัน (หากข้อความข้างต้นไม่ถึง 100 จะทำการวนลูปซ้ำ)
-        const totalTabs = 100;
-        const allMessages = [];
-        for (let i = 0; i < totalTabs; i++) {
-            // สุ่มข้อความจาก array ด้านบนเพื่อกระจายให้ครบ 100 แผ่น
-            const randomIndex = Math.floor(Math.random() * encouragingMessages.length);
-            allMessages.push(encouragingMessages[randomIndex]);
-        }
 
         const tabsContainer = document.getElementById('tabs-container');
         const modal = document.getElementById('modal');
-        const messageDisplay = document.getElementById('message-display');
-        const closeModal = document.getElementById('close-modal');
+        const modalText = document.getElementById('modal-text');
+        const closeBtn = document.getElementById('close-btn');
 
-        // ฟังก์ชันสร้างแถบกระดาษ 100 อัน
-        for (let i = 0; i < totalTabs; i++) {
+        // สร้างกระดาษ 100 อัน
+        for (let i = 1; i <= 100; i++) {
             const tab = document.createElement('div');
             tab.className = 'tab';
-            tab.innerHTML = '<div class="tab-text">ดึงฉันสิ</div>';
+            tab.textContent = 'ดึงกำลังใจ ' + i;
             
-            // เมื่อคลิกที่แถบกระดาษ
+            // สุ่มข้อความให้แต่ละใบ
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+
             tab.addEventListener('click', function() {
-                // ป้องกันการกดซ้ำ
-                if(this.classList.contains('tearing')) return;
-
-                // 1. เล่นอนิเมชันขาด
-                this.classList.add('tearing');
-
-                // 2. รอให้อนิเมชันขาดเล่นไปสักพัก ค่อยโชว์หน้าต่างข้อความพร้อมพลิกกระดาษ
-                setTimeout(() => {
-                    this.style.visibility = 'hidden'; // ซ่อนกระดาษชิ้นเดิมที่ขาดไปแล้ว
-                    messageDisplay.innerText = allMessages[i];
-                    modal.classList.add('active');
-                }, 500); 
+                if (!this.classList.contains('torn')) {
+                    // ใส่แอนิเมชันฉีกกระดาษ
+                    this.classList.add('torn');
+                    
+                    // หน่วงเวลาให้แอนิเมชันฉีกเล่นจบก่อนเปิด Modal พลิกกระดาษ
+                    setTimeout(() => {
+                        modalText.textContent = randomMessage;
+                        modal.classList.add('active');
+                    }, 500);
+                }
             });
 
             tabsContainer.appendChild(tab);
         }
 
-        // ปิดหน้าต่างข้อความ
-        closeModal.addEventListener('click', () => {
+        // ปิด Modal
+        closeBtn.addEventListener('click', () => {
             modal.classList.remove('active');
         });
 
-        // แตะพื้นที่ว่างเพื่อปิดได้เช่นกัน
+        // ปิด Modal เมื่อคลิกพื้นที่ว่าง
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
                 modal.classList.remove('active');
